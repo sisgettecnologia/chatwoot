@@ -4,6 +4,10 @@ permissions:
 
 on:
   pull_request:
+    branches:
+      - develop
+      - main
+      - 'release/chatyn-v*'
 
 # If two pushes happen within a short time in the same PR, cancel the run of the oldest push
 concurrency:
@@ -14,7 +18,7 @@ jobs:
   test:
     runs-on: ubuntu-22.04
     # Only run if MFA test keys are available
-    if: github.event_name == 'workflow_dispatch' || (github.repository == 'chatwoot/chatwoot' && github.actor != 'dependabot[bot]')
+    if: github.event_name == 'workflow_dispatch' || (github.repository == 'sisgettecnologia/chatyn' && github.actor != 'dependabot[bot]')
 
     services:
       postgres:

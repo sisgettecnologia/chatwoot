@@ -1,22 +1,18 @@
 # #
-# # This action will publish Chatwoot CE docker image.
-# # This is set to run against merges to develop, master
-# # and when tags are created.
+# # Publish Chatyn CE docker image (Docker Hub).
+# # Triggers: push tag v* or workflow_dispatch (no branch pushes).
 # #
 
-name: Publish Chatwoot CE docker images
+name: Publish Chatyn CE docker images
 
 on:
   push:
-    branches:
-      - develop
-      - master
     tags:
-      - v*
+      - 'v*'
   workflow_dispatch:
 
 env:
-  DOCKER_REPO: chatwoot/chatwoot
+  DOCKER_REPO: sisgettecnologia/chatyn
 
 jobs:
   build:
@@ -45,14 +41,14 @@ jobs:
           rm -rf enterprise
           rm -rf spec/enterprise
 
-      - name: Set Chatwoot edition
+      - name: Set Chatyn edition
         run: |
           echo -en '\nENV CW_EDITION="ce"' >> docker/Dockerfile
 
       - name: Set Docker Tags
         run: |
           SANITIZED_REF=$(echo "$GIT_REF" | sed 's/\//-/g')
-          if [ "${{ github.ref_name }}" = "master" ]; then
+          if [ "${{ github.ref_name }}" = "main" ]; then
             echo "DOCKER_TAG=${DOCKER_REPO}:latest-ce" >> $GITHUB_ENV
           else
             echo "DOCKER_TAG=${DOCKER_REPO}:${SANITIZED_REF}-ce" >> $GITHUB_ENV
@@ -122,12 +118,12 @@ jobs:
           GIT_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           SANITIZED_REF=$(echo "$GIT_REF" | sed 's/\//-/g')
-          if [ "${{ github.ref_name }}" = "master" ]; then
+          if [ "${{ github.ref_name }}" = "main" ]; then
             TAG="${DOCKER_REPO}:latest-ce"
           else
             TAG="${DOCKER_REPO}:${SANITIZED_REF}-ce"
           fi
-          
+
           docker buildx imagetools create -t $TAG \
             $(printf '${{ env.DOCKER_REPO }}@sha256:%s ' *)
 
@@ -136,10 +132,10 @@ jobs:
           GIT_REF: ${{ github.head_ref || github.ref_name }}
         run: |
           SANITIZED_REF=$(echo "$GIT_REF" | sed 's/\//-/g')
-          if [ "${{ github.ref_name }}" = "master" ]; then
+          if [ "${{ github.ref_name }}" = "main" ]; then
             TAG="${DOCKER_REPO}:latest-ce"
           else
             TAG="${DOCKER_REPO}:${SANITIZED_REF}-ce"
           fi
-          
+
           docker buildx imagetools inspect $TAG

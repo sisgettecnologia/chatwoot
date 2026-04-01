@@ -1,12 +1,11 @@
 name: Frontend Lint & Test
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
     branches:
       - develop
+      - main
+      - 'release/chatyn-v*'
 
 jobs:
   test:
@@ -15,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
-          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name || github.repository }}
 
       - uses: ruby/setup-ruby@v1
         with:

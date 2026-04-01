@@ -4,7 +4,8 @@ on:
   pull_request:
     branches:
       - develop
-      - master
+      - main
+      - 'release/chatyn-v*'
   workflow_dispatch:
 
 jobs:

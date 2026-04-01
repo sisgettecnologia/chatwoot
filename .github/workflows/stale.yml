@@ -20,9 +20,9 @@ jobs:
     - uses: actions/stale@v5
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        days-before-issue-close: -1,
+        days-before-issue-close: -1
         days-before-issue-stale: -1
-        days-before-pr-close: -1,
-        days-before-pr-stale: 30,
+        days-before-pr-close: -1
+        days-before-pr-stale: 30
         stale-pr-message: '🐢 Turtley slow progress alert! This pull request has been idle for over 30 days. Can we please speed things up and either merge it or release it back into the wild?'
         stale-pr-label: 'stale'
