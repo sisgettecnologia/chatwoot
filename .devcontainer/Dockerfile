@@ -7,7 +7,7 @@ WORKDIR /workspace
 
 # Copy dependency files first for better caching
 COPY package.json pnpm-lock.yaml ./
-COPY Gemfile Gemfile.lock ./
+COPY --chown=1000:1000 Gemfile Gemfile.lock ./
 
 # Install dependencies (will be cached if files don't change)
 RUN pnpm install --frozen-lockfile && \
